@@ -1,8 +1,8 @@
 import os
 import sys
 
-from housing.exception import HousingException
-from housing.util.util import load_object
+from restuarant.exception import RestuarantException
+from restuarant.util.util import load_object
 
 import pandas as pd
 
@@ -33,7 +33,7 @@ class HousingData:
             self.ocean_proximity = ocean_proximity
             self.median_house_value = median_house_value
         except Exception as e:
-            raise HousingException(e, sys) from e
+            raise RestuarantException(e, sys) from e
 
     def get_housing_input_data_frame(self):
 
@@ -41,7 +41,7 @@ class HousingData:
             housing_input_dict = self.get_housing_data_as_dict()
             return pd.DataFrame(housing_input_dict)
         except Exception as e:
-            raise HousingException(e, sys) from e
+            raise RestuarantException(e, sys) from e
 
     def get_housing_data_as_dict(self):
         try:
@@ -57,7 +57,7 @@ class HousingData:
                 "ocean_proximity": [self.ocean_proximity]}
             return input_data
         except Exception as e:
-            raise HousingException(e, sys)
+            raise RestuarantException(e, sys)
 
 
 class HousingPredictor:
@@ -66,7 +66,7 @@ class HousingPredictor:
         try:
             self.model_dir = model_dir
         except Exception as e:
-            raise HousingException(e, sys) from e
+            raise RestuarantException(e, sys) from e
 
     def get_latest_model_path(self):
         try:
@@ -76,7 +76,7 @@ class HousingPredictor:
             latest_model_path = os.path.join(latest_model_dir, file_name)
             return latest_model_path
         except Exception as e:
-            raise HousingException(e, sys) from e
+            raise RestuarantException(e, sys) from e
 
     def predict(self, X):
         try:
@@ -85,4 +85,4 @@ class HousingPredictor:
             median_house_value = model.predict(X)
             return median_house_value
         except Exception as e:
-            raise HousingException(e, sys) from e
+            raise RestuarantException(e, sys) from e

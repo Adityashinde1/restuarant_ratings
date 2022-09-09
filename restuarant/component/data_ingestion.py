@@ -1,8 +1,8 @@
-from housing.entity.config_entity import DataIngestionConfig
+from restuarant.entity.config_entity import DataIngestionConfig
 import sys,os
-from housing.exception import HousingException
-from housing.logger import logging
-from housing.entity.artifact_entity import DataIngestionArtifact
+from restuarant.exception import RestuarantException
+from restuarant.logger import logging
+from restuarant.entity.artifact_entity import DataIngestionArtifact
 import tarfile
 import numpy as np
 from six.moves import urllib
@@ -17,10 +17,10 @@ class DataIngestion:
             self.data_ingestion_config = data_ingestion_config
 
         except Exception as e:
-            raise HousingException(e,sys)
+            raise RestuarantException(e,sys)
     
 
-    def download_housing_data(self,) -> str:
+    def download_data(self,) -> str:
         try:
             #extraction remote url to download dataset
             download_url = self.data_ingestion_config.dataset_download_url
@@ -40,7 +40,7 @@ class DataIngestion:
             return tgz_file_path
 
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
     def extract_tgz_file(self,tgz_file_path:str):
         try:
@@ -57,7 +57,7 @@ class DataIngestion:
             logging.info(f"Extraction completed")
 
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
     
     def split_data_as_train_test(self) -> DataIngestionArtifact:
         try:
@@ -114,7 +114,7 @@ class DataIngestion:
             return data_ingestion_artifact
 
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
     def initiate_data_ingestion(self)-> DataIngestionArtifact:
         try:
@@ -122,7 +122,7 @@ class DataIngestion:
             self.extract_tgz_file(tgz_file_path=tgz_file_path)
             return self.split_data_as_train_test()
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
     
 
 

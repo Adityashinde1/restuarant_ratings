@@ -5,7 +5,7 @@ from restuarant.util.util import read_yaml_file
 from restuarant.logger import logging
 import sys,os
 from restuarant.constant import *
-from restuarant.exception import HousingException
+from restuarant.exception import RestuarantException
 
 
 class Configuartion:
@@ -19,7 +19,7 @@ class Configuartion:
             self.training_pipeline_config = self.get_training_pipeline_config()
             self.time_stamp = current_time_stamp
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
 
     def get_data_ingestion_config(self) ->DataIngestionConfig:
@@ -65,7 +65,7 @@ class Configuartion:
             logging.info(f"Data Ingestion config: {data_ingestion_config}")
             return data_ingestion_config
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
     def get_data_validation_config(self) -> DataValidationConfig:
         try:
@@ -100,7 +100,7 @@ class Configuartion:
             )
             return data_validation_config
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
     def get_data_transformation_config(self) -> DataTransformationConfig:
         try:
@@ -149,7 +149,7 @@ class Configuartion:
             logging.info(f"Data transformation config: {data_transformation_config}")
             return data_transformation_config
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
     def get_model_trainer_config(self) -> ModelTrainerConfig:
         try:
@@ -180,7 +180,7 @@ class Configuartion:
             logging.info(f"Model trainer config: {model_trainer_config}")
             return model_trainer_config
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
     def get_model_evaluation_config(self) ->ModelEvaluationConfig:
         try:
@@ -197,7 +197,7 @@ class Configuartion:
             logging.info(f"Model Evaluation Config: {response}.")
             return response
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
 
     def get_model_pusher_config(self) -> ModelPusherConfig:
@@ -212,7 +212,7 @@ class Configuartion:
             return model_pusher_config
 
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
 
     def get_training_pipeline_config(self) ->TrainingPipelineConfig:
         try:
@@ -226,4 +226,4 @@ class Configuartion:
             logging.info(f"Training pipleine config: {training_pipeline_config}")
             return training_pipeline_config
         except Exception as e:
-            raise HousingException(e,sys) from e
+            raise RestuarantException(e,sys) from e
