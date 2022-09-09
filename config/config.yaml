@@ -3,9 +3,8 @@ training_pipeline_config:
   artifact_dir: artifact
 
 data_ingestion_config:
-  dataset_download_url: https://github.com/Adityashinde1/restuarant_ratings/blob/main/data/ZomatoData.zip
+  dataset_download_url: https://github.com/Adityashinde1/restuarant_ratings/blob/main/data/ZomatoData/ZomatoData.csv
   raw_data_dir: raw_data
-  tgz_download_dir: tgz_data
   ingested_dir: ingested_data
   ingested_train_dir: train
   ingested_test_dir: test 
@@ -20,7 +19,6 @@ data_validation_config:
   report_page_file_name: report.html
 
 data_transformation_config:
-  add_bedroom_per_room: true
   transformed_dir: transformed_data
   transformed_train_dir: train
   transformed_test_dir: test
