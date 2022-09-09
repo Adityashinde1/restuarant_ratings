@@ -3,9 +3,6 @@ import sys,os
 from restuarant.exception import RestuarantException
 from restuarant.logger import logging
 from restuarant.entity.artifact_entity import DataIngestionArtifact
-import tarfile
-import numpy as np
-from six.moves import urllib
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
