@@ -1,9 +1,8 @@
-
-
 from restuarant.logger import logging
 from restuarant.exception import RestuarantException
 from restuarant.entity.config_entity import DataValidationConfig
 from restuarant.entity.artifact_entity import DataIngestionArtifact,DataValidationArtifact
+from restuarant.util.util import read_yaml_file
 import os,sys
 import pandas  as pd
 from evidently.model_profile import Profile
@@ -65,20 +64,71 @@ class DataValidation:
     def validate_dataset_schema(self)->bool:
         try:
             validation_status = False
-            
-            #Assigment validate training and testing dataset using schema file
-            #1. Number of Column
-            #2. Check the value of ocean proximity 
-            # acceptable values     <1H OCEAN
-            # INLAND
-            # ISLAND
-            # NEAR BAY
-            # NEAR OCEAN
-            #3. Check column names
 
+            # Get the train and test dataframes
+            train_df,test_df = self.get_train_and_test_df()
 
-            validation_status = True
-            return validation_status 
+            # Get the schema file path
+            schema_file_path = self.data_validation_config.schema_file_path
+
+            # Read the schema file
+            schema_df = read_yaml_file(schema_file_path)
+
+            # Validation for train data
+            if len(train_df.columns) == len(schema_df['columns']):
+                validation_status = True
+            else:
+                validation_status = False
+                return validation_status
+
+            # Validation for test data
+            if len(test_df.columns) == len(schema_df['columns']):
+                validation_status = True
+            else:
+                validation_status = False
+                return validation_status
+
+            # Validation for number of Train data columns
+            for i in range(len(schema_df['columns'])):
+                if list(schema_df['columns'].keys())[i] == train_df.columns[i]:
+                    validation_status = True
+                else:
+                    validation_status = False
+                    return validation_status
+
+            # Validation for number of Train data columns
+            for i in range(len(schema_df['columns'])):
+                if list(schema_df['columns'].keys())[i] == test_df.columns[i]:
+                    validation_status = True
+                else:
+                    validation_status = False
+                    return validation_status
+
+            # Validation for datatype of Numerical columns
+            for column in schema_df['numerical_columns']:
+                try:
+                    if column in train_df.columns:
+                        validation = True
+                    else:
+                        break
+
+                except:
+                    validation=False
+                return validation
+
+            # Validation for datatype of Categorical columns
+            for column in schema_df['categorical_columns']:
+                try:
+                    if column in train_df.columns:
+                        validation = True
+                    else:
+                        break
+
+                except:
+                    validation=False
+                return validation
+
+            return validation_status
         except Exception as e:
             raise RestuarantException(e,sys) from e
 

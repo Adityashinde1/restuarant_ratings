@@ -5,6 +5,7 @@ from restuarant.logger import logging
 from restuarant.entity.artifact_entity import DataIngestionArtifact
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from six.moves import urllib
 
 class DataIngestion:
 
@@ -21,22 +22,20 @@ class DataIngestion:
         try:
             #extraction remote url to download dataset
             download_url = self.data_ingestion_config.dataset_download_url
-            raw_data_dir = self.data_ingestion_config.raw_data_dir
 
-            if os.path.exists(raw_data_dir):
-                os.remove(raw_data_dir)
-
-            os.makedirs(raw_data_dir,exist_ok=True)
-            logging.info(f"Downloading file from :[{download_url}] into :[{raw_data_dir}]")
-
-            # Read the file from the url using pandas
-            zomato_data_frame = pd.read_csv(download_url)
-            # Write it to the file system
-            # print(wheat_data_frame.head())
-            zomato_data_frame.to_csv(os.path.join(raw_data_dir,"ZomatoData.csv"),index=False)
+            #folder location to download file
+            csv_download_dir = self.data_ingestion_config.csv_download_dir
             
-            logging.info(f"File :[{raw_data_dir}] has been downloaded successfully.")
-            return raw_data_dir
+            os.makedirs(csv_download_dir,exist_ok=True)
+
+            housing_file_name = os.path.basename(download_url)
+
+            csv_file_path = os.path.join(csv_download_dir, housing_file_name)
+
+            logging.info(f"Downloading file from :[{download_url}] into :[{csv_file_path}]")
+            urllib.request.urlretrieve(download_url, csv_file_path)
+            logging.info(f"File :[{csv_file_path}] has been downloaded successfully.")
+            return csv_file_path
 
         except Exception as e:
             raise RestuarantException(e,sys) from e
@@ -52,12 +51,12 @@ class DataIngestion:
 
 
             logging.info(f"Reading csv file: [{zomato_file_path}]")
-            zomato_data_frame = pd.read_csv(zomato_file_path)
+            zomato_dataframe = pd.read_csv(zomato_file_path)
 
             logging.info(f"Splitting data into train and test")
 
             # Train test split
-            train_set, test_set = train_test_split(zomato_data_frame, test_size=0.2, random_state=42)
+            train_set, test_set = train_test_split(zomato_dataframe, test_size=0.2, random_state=1)
 
             train_file_path = os.path.join(self.data_ingestion_config.ingested_train_dir,
                                             file_name)
@@ -90,8 +89,7 @@ class DataIngestion:
 
     def initiate_data_ingestion(self)-> DataIngestionArtifact:
         try:
-            tgz_file_path =  self.download_data()
-            self.extract_tgz_file(tgz_file_path=tgz_file_path)
+            csv_file_path =  self.download_data()
             return self.split_data_as_train_test()
         except Exception as e:
             raise RestuarantException(e,sys) from e
