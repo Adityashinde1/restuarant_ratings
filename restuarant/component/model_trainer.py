@@ -11,7 +11,7 @@ from restuarant.entity.model_factory import evaluate_regression_model
 
 
 
-class HousingEstimatorModel:
+class RestuarantEstimatorModel:
     def __init__(self, preprocessing_object, trained_model_object):
         """
         TrainedModel constructor
@@ -92,7 +92,7 @@ class ModelTrainer:
 
 
             trained_model_file_path=self.model_trainer_config.trained_model_file_path
-            housing_model = HousingEstimatorModel(preprocessing_object=preprocessing_obj,trained_model_object=model_object)
+            housing_model = RestuarantEstimatorModel(preprocessing_object=preprocessing_obj,trained_model_object=model_object)
             logging.info(f"Saving model at path: {trained_model_file_path}")
             save_object(file_path=trained_model_file_path,obj=housing_model)
 

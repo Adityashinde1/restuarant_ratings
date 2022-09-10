@@ -1,5 +1,3 @@
-
-
 from restuarant.logger import logging
 from restuarant.exception import RestuarantException
 from restuarant.entity.config_entity import ModelEvaluationConfig
@@ -10,8 +8,6 @@ import os
 import sys
 from restuarant.util.util import write_yaml_file, read_yaml_file, load_object,load_data
 from restuarant.entity.model_factory import evaluate_regression_model
-
-
 
 
 class ModelEvaluation:

@@ -3,7 +3,7 @@
 {% block head %}
 
 
-<title>Housing Estimator</title>
+<title>Zomato Restuarant Ratings Prediction</title>
 {% endblock %}
 
 {% block content %}
@@ -13,76 +13,39 @@
 
 
         <form action="/predict" method="post">
-            <legend>Housing Estimation Form</legend>
+            <legend>Restuarant rating Form</legend>
             <div class="mb-3">
-                <label class="form-label">Longitude</label>
-                <input class="form-control" type="text" name="longitude" placeholder="Enter a value of longitude"
+                <label class="form-label">Votes</label>
+                <input class="form-control" type="text" name="votes" placeholder="Enter a value of votes"
                     required />
             </div>
             <div class="mb-3">
-                <label class="form-label">Latitude</label>
-                <input class="form-control" type="text" name="latitude" placeholder="Enter a value of latitude"
-                    required />
-
-            </div>
-            <div class="mb-3">
-                <label class="form-label">House Median Age</label>
-                <input class="form-control" type="text" name="housing_median_age"
-                    placeholder="Enter a value of housing_median_age" />
-
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Total Rooms</label>
-                <input class="form-control" type="text" name="total_rooms" placeholder="Enter a value of total_rooms"
+                <label class="form-label">Average Cost For Two</label>
+                <input class="form-control" type="text" name="average_cost_for_two" placeholder="Enter a value of Average cost for two people"
                     required />
 
             </div>
             <div class="mb-3">
-                <label class="form-label">Total Bedrooms</label>
-                <input class="form-control" type="text" name="total_bedrooms"
-                    placeholder="Enter a value of total_bedrooms" required />
+                <label class="form-label">Has Table Booking</label>
+                <input class="form-control" type="text" name="has_table_booking"
+                    placeholder="Enter either 0 or 1, 0 = No, 1 = Yes" />
+
             </div>
             <div class="mb-3">
-                <label class="form-label">Population</label>
-                <input class="form-control" type="text" name="population" placeholder="Enter a value of population"
+                <label class="form-label">Has Online Delivery</label>
+                <input class="form-control" type="text" name="has_online_delivery" placeholder="Enter either 0 or 1, 0 = No, 1 = Yes"
                     required />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Households</label>
-                <input class="form-control" type="text" name="households" placeholder="Enter a value of households"
-                    required />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Median Income</label>
-                <input class="form-control" type="text" name="median_income"
-                    placeholder="Enter a value of median_income" required />
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Ocean Proximity</label>
-                <select class="form-control" name="ocean_proximity" placeholder="Enter a value of ocean_proximity"
-                    required>
 
-                    <option value="<1H OCEAN">
-                        &lt;1H OCEAN
-                    </option>
-                    <option value="INLAND">
-                        INLAND
-                    </option>
-                    <option value="NEAR BAY">
-                        NEAR BAY
-                    </option>
-                    <option value="NEAR OCEAN">
-                        NEAR OCEAN
-                    </option>
-                    <option value="ISLAND">
-                        ISLAND
-                    </option>
-
-                </select>
             </div>
+            <div class="mb-3">
+                <label class="form-label">Price Range</label>
+                <input class="form-control" type="text" name="price_range"
+                    placeholder="Enter a value for price range" required />
+            </div>
+           
             <div class="mb-3">
 
-                <input class="btn btn-primary" type="submit" value="Predict Median House Value" required />
+                <input class="btn btn-primary" type="submit" value="Predict Restuarant Rating Value" required />
             </div>
 
         </form>
@@ -91,18 +54,18 @@
     <div class="col-md-6 col-sm-12 col-xs-6 col-lg-6">
         <div class="card">
             <div class="card-header">
-              California housing price
+              Zomato Restuarant Ratings
             </div>
             <div class="card-body">
-        {% if context['housing_data'] is not none %}
+        {% if context['restuarant_data'] is not none %}
         <table class="table table-striped">
-            <caption>Califoria Housing Prediction </caption>
+            <caption>Zomato Restuarant Rating Prediction </caption>
             <tr>
                 <th>Input Feature</th>
                 <th>Feature Value</th>
 
             </tr>
-            {% for column,value in context['housing_data'].items() %}
+            {% for column,value in context['restuarant_data'].items() %}
 
 
 
@@ -114,9 +77,9 @@
             {% endfor %}
             <tr>
 
-                <td>median_house_value </td>
+                <td>restuarant_rating_value </td>
                 <td>
-                    {{ context['median_house_value'] }}
+                    {{ context['restuarant_rating_value'] }}
                 </td>
             </tr>
         </table>
@@ -124,10 +87,9 @@
         {% else %}
        
               <h5 class="card-title">Submit Form</h5>
-              <p class="card-text">Kindly provide necessary information to estimate housing price in california</p>
+              <p class="card-text">Kindly provide necessary information to estimate Restuarant Ratings</p>
             
          
-
         {% endif %}
         Go to <a href="/" class="btn btn-primary">Home</a>
     </div>

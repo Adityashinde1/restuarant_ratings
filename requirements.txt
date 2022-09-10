@@ -6,5 +6,6 @@ pandas
 PyYAML
 evidently
 dill
+category_encoders
 matplotlib
 -e .

@@ -43,11 +43,11 @@ class DataIngestion:
     
     def split_data_as_train_test(self) -> DataIngestionArtifact:
         try:
-            raw_data_dir = self.data_ingestion_config.raw_data_dir
+            csv_data_dir = self.data_ingestion_config.csv_download_dir
 
-            file_name = os.listdir(raw_data_dir)[0]
+            file_name = os.listdir(csv_data_dir)[0]
 
-            zomato_file_path = os.path.join(raw_data_dir,file_name)
+            zomato_file_path = os.path.join(csv_data_dir,file_name)
 
 
             logging.info(f"Reading csv file: [{zomato_file_path}]")

@@ -2,22 +2,22 @@ from flask import Flask, request
 import sys
 
 import pip
-from housing.util.util import read_yaml_file, write_yaml_file
+from restuarant.util.util import read_yaml_file, write_yaml_file
 from matplotlib.style import context
-from housing.logger import logging
-from housing.exception import HousingException
+from restuarant.logger import logging
+from restuarant.exception import RestuarantException
 import os, sys
 import json
-from housing.config.configuration import Configuartion
-from housing.constant import CONFIG_DIR, get_current_time_stamp
-from housing.pipeline.pipeline import Pipeline
-from housing.entity.housing_predictor import HousingPredictor, HousingData
+from restuarant.config.configuration import Configuartion
+from restuarant.constant import CONFIG_DIR, get_current_time_stamp
+from restuarant.pipeline.pipeline import Pipeline
+from restuarant.entity.restuarant_predictor import RestuarantPredictor, RestuarantData
 from flask import send_file, abort, render_template
 
 
 ROOT_DIR = os.getcwd()
 LOG_FOLDER_NAME = "logs"
-PIPELINE_FOLDER_NAME = "housing"
+PIPELINE_FOLDER_NAME = "restuarant"
 SAVED_MODELS_DIR_NAME = "saved_models"
 MODEL_CONFIG_FILE_PATH = os.path.join(ROOT_DIR, CONFIG_DIR, "model.yaml")
 LOG_DIR = os.path.join(ROOT_DIR, LOG_FOLDER_NAME)
@@ -25,18 +25,18 @@ PIPELINE_DIR = os.path.join(ROOT_DIR, PIPELINE_FOLDER_NAME)
 MODEL_DIR = os.path.join(ROOT_DIR, SAVED_MODELS_DIR_NAME)
 
 
-from housing.logger import get_log_dataframe
+from restuarant.logger import get_log_dataframe
 
-HOUSING_DATA_KEY = "housing_data"
-MEDIAN_HOUSING_VALUE_KEY = "median_house_value"
+RESTUARANT_DATA_KEY = "restuarant_data"
+RESTUARANT_RATING_VALUE_KEY = "restuarant_rating_value"
 
 app = Flask(__name__)
 
 
-@app.route('/artifact', defaults={'req_path': 'housing'})
+@app.route('/artifact', defaults={'req_path': 'restuarant'})
 @app.route('/artifact/<path:req_path>')
 def render_artifact_dir(req_path):
-    os.makedirs("housing", exist_ok=True)
+    os.makedirs("resturant", exist_ok=True)
     # Joining the base and the requested path
     print(f"req_path: {req_path}")
     abs_path = os.path.join(req_path)
@@ -103,37 +103,29 @@ def train():
 @app.route('/predict', methods=['GET', 'POST'])
 def predict():
     context = {
-        HOUSING_DATA_KEY: None,
-        MEDIAN_HOUSING_VALUE_KEY: None
+        RESTUARANT_DATA_KEY: None,
+        RESTUARANT_RATING_VALUE_KEY: None
     }
 
     if request.method == 'POST':
-        longitude = float(request.form['longitude'])
-        latitude = float(request.form['latitude'])
-        housing_median_age = float(request.form['housing_median_age'])
-        total_rooms = float(request.form['total_rooms'])
-        total_bedrooms = float(request.form['total_bedrooms'])
-        population = float(request.form['population'])
-        households = float(request.form['households'])
-        median_income = float(request.form['median_income'])
-        ocean_proximity = request.form['ocean_proximity']
-
-        housing_data = HousingData(longitude=longitude,
-                                   latitude=latitude,
-                                   housing_median_age=housing_median_age,
-                                   total_rooms=total_rooms,
-                                   total_bedrooms=total_bedrooms,
-                                   population=population,
-                                   households=households,
-                                   median_income=median_income,
-                                   ocean_proximity=ocean_proximity,
+        votes = float(request.form['votes'])
+        average_cost_for_two = float(request.form['average_cost_for_two'])
+        has_table_booking = float(request.form['has_table_booking'])
+        has_online_delivery = float(request.form['has_online_delivery'])
+        price_range = float(request.form['price_range'])
+        
+        restuarant_data = RestuarantData(votes=votes,
+                                   average_cost_for_two=average_cost_for_two,
+                                   has_online_delivery=has_online_delivery,
+                                   has_table_booking=has_table_booking,
+                                   price_range=price_range
                                    )
-        housing_df = housing_data.get_housing_input_data_frame()
-        housing_predictor = HousingPredictor(model_dir=MODEL_DIR)
-        median_housing_value = housing_predictor.predict(X=housing_df)
+        restuarant_df = restuarant_data.get_restuarant_input_data_frame()
+        restuarant_predictor = RestuarantPredictor(model_dir=MODEL_DIR)
+        median_rating_value = restuarant_predictor.predict(X=restuarant_df)
         context = {
-            HOUSING_DATA_KEY: housing_data.get_housing_data_as_dict(),
-            MEDIAN_HOUSING_VALUE_KEY: median_housing_value,
+            RESTUARANT_DATA_KEY: restuarant_data.get_restuarant_data_as_dict(),
+            RESTUARANT_RATING_VALUE_KEY: median_rating_value,
         }
         return render_template('predict.html', context=context)
     return render_template("predict.html", context=context)

@@ -3,8 +3,8 @@ training_pipeline_config:
   artifact_dir: artifact
 
 data_ingestion_config:
-  dataset_download_url: https://github.com/Adityashinde1/restuarant_ratings/blob/main/data/ZomatoData/ZomatoData.csv
-  raw_data_dir: raw_data
+  dataset_download_url: https://raw.githubusercontent.com/Adityashinde1/restuarant_ratings/main/data/ZomatoData/ZomatoData.csv
+  csv_download_dir: raw_data
   ingested_dir: ingested_data
   ingested_train_dir: train
   ingested_test_dir: test 
@@ -28,7 +28,7 @@ data_transformation_config:
 model_trainer_config:
   trained_model_dir: trained_model
   model_file_name: model.pkl
-  base_accuracy: 0.6
+  base_accuracy: 0.5
   model_config_dir: config
   model_config_file_name: model.yaml
 

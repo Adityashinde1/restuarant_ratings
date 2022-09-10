@@ -6,19 +6,41 @@ grid_search:
     verbose: 2
 model_selection:
   module_0:
-    class: LinearRegression
-    module: sklearn.linear_model
+    class: DecisionTreeRegressor
+    module: sklearn.tree
     params:
-      fit_intercept: true
-    search_param_grid:
-      fit_intercept:
-      - true
-      - false
+      min_samples_leaf: 3
+      max_features: 'sqrt'
+      n_estimators: 100
+      max_depth: 2
+    search_param_grid: 
+      min_samples_leaf: 
+      - 3
   module_1:
     class: RandomForestRegressor
     module: sklearn.ensemble
     params:
-      min_samples_leaf: 3
+      min_samples_leaf: 2
+      max_features: 'sqrt'
+      n_estimators: 100
+      max_depth: 2
     search_param_grid:
       min_samples_leaf:
-      - 6
+      - 2
+      - 8
+      - 15
+      - 10
+      max_features:
+      - 5
+      - 7
+      - "sqrt"
+      - "log2"
+      n_estimators:
+      - 100
+      - 200
+      - 500
+      - 1000
+      max_depth:
+      - 5
+      - 8
+      - 10

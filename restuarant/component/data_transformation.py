@@ -6,12 +6,13 @@ from restuarant.entity.artifact_entity import DataIngestionArtifact,\
 DataValidationArtifact,DataTransformationArtifact
 import sys,os
 import numpy as np
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import Pipeline
 from sklearn.compose import ColumnTransformer
 import pandas as pd
 from restuarant.constant import *
 from restuarant.util.util import read_yaml_file,save_object,save_numpy_array_data,load_data
+from category_encoders.binary import BinaryEncoder
 
 
 class DataTransformation:
@@ -40,7 +41,7 @@ class DataTransformation:
             numerical_columns = schema_df[TRANSFORMERS_COLUMNS_NUM_KEY]
             categorical_columns = schema_df[TRANSFORMERS_COLUMNS_CAT_KEY]
 
-            cat_pipeline = Pipeline(steps=[('labelencoding', LabelEncoder())])
+            cat_pipeline = Pipeline(steps=[('binaryencoding', BinaryEncoder())])
             num_pipeline = Pipeline(steps=[('scaler', StandardScaler())])
             
             logging.info(f"Categorical columns: {categorical_columns}")
@@ -50,7 +51,7 @@ class DataTransformation:
             preprocessing = ColumnTransformer([
                 ('num_pipeline', num_pipeline, numerical_columns),
                 ('cat_pipeline', cat_pipeline, categorical_columns),
-            ])
+            ], remainder='passthrough')
             return preprocessing
 
         except Exception as e:
@@ -85,13 +86,9 @@ class DataTransformation:
 
             logging.info(f"Splitting input and target feature from training and testing dataframe.")
             input_feature_train_df = train_df[selected_columns]
-            input_feature_train_df[schema_df[TARGET_COLUMN_KEY]] = train_df[schema_df[TARGET_COLUMN_KEY]]
-            input_feature_train_df = train_df.drop(columns=[target_column_name],axis=1)
             target_feature_train_df = train_df[target_column_name]
 
             input_feature_test_df = test_df[selected_columns]
-            input_feature_test_df[schema_df[TARGET_COLUMN_KEY]] = test_df[schema_df[TARGET_COLUMN_KEY]]
-            input_feature_test_df = test_df.drop(columns=[target_column_name],axis=1)
             target_feature_test_df = test_df[target_column_name]
             
 
