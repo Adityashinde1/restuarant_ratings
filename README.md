@@ -21,6 +21,7 @@ pip install -r requirements.txt
 To run main file
 ```python
 python app.py
+```
 
 ## 🧑‍💻 Tech used
 1. sklearn library
