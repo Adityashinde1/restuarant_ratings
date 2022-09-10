@@ -69,7 +69,9 @@ DATASET_SCHEMA_COLUMNS_KEY=  "columns"
 
 NUMERICAL_COLUMN_KEY="numerical_columns"
 CATEGORICAL_COLUMN_KEY = "categorical_columns"
-
+SELECTED_COLUMN_KEY = "selected_columns"
+TRANSFORMERS_COLUMNS_CAT_KEY = 'transformer_columns_cat'
+TRANSFORMERS_COLUMNS_NUM_KEY = 'transformer_columns_num'
 
 TARGET_COLUMN_KEY="target_column"
 

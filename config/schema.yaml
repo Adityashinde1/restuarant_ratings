@@ -34,8 +34,6 @@ numerical_columns:
   - Is_delivering_now
   - Switch_to_order_menu
 
-
-
 categorical_columns:
   - Restaurant_Name
   - City
@@ -45,6 +43,20 @@ categorical_columns:
   - Cuisines
 
 
+selected_columns:
+  - Votes 
+  - Average_Cost_for_two
+  - Has_Table_booking
+  - Has_Online_delivery
+  - Price_range
+
+transformer_columns_cat:
+  - Has_Table_booking
+  - Has_Online_delivery
+
+transformer_columns_num:
+  - Votes
+  - Average_Cost_for_two
 
 
 target_column: Rating
