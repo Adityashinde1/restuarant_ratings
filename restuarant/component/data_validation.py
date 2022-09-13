@@ -96,7 +96,7 @@ class DataValidation:
                     validation_status = False
                     return validation_status
 
-            # Validation for number of Train data columns
+            # Validation for number of Test data columns
             for i in range(len(schema_df['columns'])):
                 if list(schema_df['columns'].keys())[i] == test_df.columns[i]:
                     validation_status = True
