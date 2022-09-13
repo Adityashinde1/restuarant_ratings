@@ -28,9 +28,9 @@ class DataIngestion:
             
             os.makedirs(csv_download_dir,exist_ok=True)
 
-            housing_file_name = os.path.basename(download_url)
+            restuarant_file_name = os.path.basename(download_url)
 
-            csv_file_path = os.path.join(csv_download_dir, housing_file_name)
+            csv_file_path = os.path.join(csv_download_dir, restuarant_file_name)
 
             logging.info(f"Downloading file from :[{download_url}] into :[{csv_file_path}]")
             urllib.request.urlretrieve(download_url, csv_file_path)
